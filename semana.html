@@ -10,173 +10,263 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
     .fade-in-up { animation: fadeInUp .7s ease-out; }
+    .gradient-animated {
+      background: linear-gradient(-45deg, #1e3a8a, #1e40af, #3b82f6, #60a5fa);
+      background-size: 300% 300%;
+      animation: gradientMove 8s ease infinite;
+    }
+
+    .nav-btn {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, #60a5fa, #93c5fd);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+    .nav-btn:hover::before { transform: scaleX(1); transform-origin: left; }
+    .nav-btn:hover { transform: translateY(-2px); }
+
+    .btn-action {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .btn-action::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.4s ease, height 0.4s ease;
+    }
+    .btn-action:hover::before { width: 200px; height: 200px; }
+    .btn-action:hover { transform: scale(1.05); }
+
+    .card-semana {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .card-semana::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #1e40af, #3b82f6, #60a5fa);
+      background-size: 200% auto;
+      animation: shimmer 3s linear infinite;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .card-semana:hover::before { transform: scaleX(1); }
+    .card-semana:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.2);
+    }
+    .card-semana .card-img {
+      transition: transform 0.6s ease;
+    }
+    .card-semana:hover .card-img {
+      transform: scale(1.1);
+    }
+
+    .hero-badge {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .empty-state {
+      position: relative;
+    }
+    .empty-state::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+      animation: float 4s ease-in-out infinite;
+    }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen">
+<body class="bg-slate-100 text-slate-800 min-h-screen">
 
-  <!-- Header -->
-  <header class="bg-blue-900 text-white shadow-md sticky top-0 z-50">
+  <header class="gradient-animated text-white shadow-xl sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="index.html" class="font-bold text-xl">Portafolio BD II</a>
-      <a href="dashboard.html" class="px-4 py-2 rounded-xl bg-white text-blue-900 hover:scale-105 transition">Panel</a>
+      <a href="index.html" class="flex items-center gap-3 font-bold text-xl">
+        <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+        </div>
+        Portafolio BD II
+      </a>
+      <div class="flex items-center gap-3">
+        <a href="dashboard.html" id="panelBtn" class="nav-btn bg-white text-blue-900 px-6 py-2 rounded-full font-semibold hidden">Panel</a>
+        <button id="logoutBtn" class="nav-btn border-2 border-white px-6 py-2 rounded-full hidden">Cerrar sesión</button>
+        <a href="iniciarsesion.html" id="loginBtn" class="nav-btn bg-white text-blue-900 px-6 py-2 rounded-full font-semibold">Iniciar sesión</a>
+      </div>
     </div>
   </header>
 
-  <!-- Hero semana -->
   <section class="max-w-7xl mx-auto px-6 py-10 fade-in-up">
-    <div class="bg-white rounded-3xl shadow-lg p-8 border border-slate-200">
-      <p id="semanaBadge" class="inline-block px-4 py-1 rounded-full text-sm bg-blue-100 text-blue-900 font-semibold">Semana</p>
-      <h1 id="tituloSemana" class="mt-4 text-4xl font-extrabold text-blue-900">Cargando semana...</h1>
-      <p class="mt-3 text-slate-600 max-w-3xl">
+    <div class="card-semana bg-white rounded-3xl shadow-xl p-10 text-center">
+      <span id="semanaBadge" class="hero-badge inline-block px-5 py-2 rounded-full text-sm bg-blue-100 text-blue-900 font-bold">Semana</span>
+      <h1 id="tituloSemana" class="mt-6 text-5xl md:text-6xl font-black text-blue-900">Cargando semana...</h1>
+      <p class="mt-6 text-slate-600 max-w-2xl mx-auto text-lg">
         Aquí se muestran los trabajos, avances, capturas y enlaces al repositorio correspondientes a la semana seleccionada.
       </p>
     </div>
   </section>
 
-  <!-- Trabajos -->
   <main class="max-w-7xl mx-auto px-6 pb-16">
     <section id="contenedorTrabajos" class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-      <!-- contenido dinámico -->
     </section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const numSemana = Number(params.get('num')) || 1;
 
-<script>
-const supabaseClient = window.supabase.createClient(
-  'https://mfrbvrksnlbxovvlklyh.supabase.co',
-  'sb_publishable_wUzL2Hg-3zFMDBE1aeHfgQ_ga5sWtNo'
-);
+    document.getElementById('semanaBadge').textContent = `Semana ${numSemana}`;
+    document.getElementById('tituloSemana').textContent = `Avances de la Semana ${numSemana}`;
 
-const params = new URLSearchParams(window.location.search);
-const numSemana = Number(params.get('num')) || 1;
+    const contenedor = document.getElementById('contenedorTrabajos');
+    const panelBtn = document.getElementById('panelBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const loginBtn = document.getElementById('loginBtn');
 
-document.getElementById('semanaBadge').textContent = `Semana ${numSemana}`;
-document.getElementById('tituloSemana').textContent =
-  `Avances de la Semana ${numSemana}`;
+    function obtenerIconoArchivo(nombre) {
+      if (!nombre) return `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>`;
+      const ext = nombre.split('.').pop().toLowerCase();
+      if (['pdf'].includes(ext)) return `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>`;
+      if (['zip', 'rar'].includes(ext)) return `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>`;
+      if (['png', 'jpg', 'jpeg', 'webp'].includes(ext)) return `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>`;
+      return `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>`;
+    }
 
-const contenedor = document.getElementById('contenedorTrabajos');
-
-function obtenerIconoArchivo(nombre) {
-  if (!nombre) return '📁';
-
-  const ext = nombre.split('.').pop().toLowerCase();
-
-  if (['pdf'].includes(ext)) return '📄';
-  if (['zip', 'rar'].includes(ext)) return '🗜️';
-  if (['png', 'jpg', 'jpeg', 'webp'].includes(ext)) return '🖼️';
-  if (['js', 'html', 'css', 'sql', 'java', 'py'].includes(ext)) return '💻';
-
-  return '📁';
-}
-
-function crearCard(trabajo) {
-  return `
-    <article class="bg-white rounded-3xl shadow-lg overflow-hidden border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition duration-300">
-
-      ${trabajo.imagen_url ? `
-        <img
-          src="${trabajo.imagen_url}"
-          alt="Captura del trabajo"
-          class="w-full h-64 object-cover"
-        >
-      ` : ''}
-
-      <div class="p-6">
-        <div class="flex justify-between items-start">
-          <div>
-            <span class="text-sm text-blue-700 font-semibold">
-              Semana ${trabajo.semana}
-            </span>
-
-            <h2 class="text-2xl font-bold text-blue-900 mt-1">
-              ${trabajo.titulo}
-            </h2>
+    function crearCard(trabajo) {
+      return `
+        <article class="card-semana bg-white rounded-3xl shadow-lg overflow-hidden border border-slate-100">
+          ${trabajo.imagen_url ? `<div class="overflow-hidden"><img src="${trabajo.imagen_url}" alt="Captura del trabajo" class="card-img w-full h-64 object-cover"></div>` : ''}
+          <div class="p-7">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">Semana ${trabajo.semana}</span>
+                <h2 class="text-2xl font-bold text-blue-900 mt-2">${trabajo.titulo}</h2>
+              </div>
+              <span class="text-xs text-slate-400 bg-slate-100 px-3 py-1 rounded-full">${new Date(trabajo.created_at).toLocaleDateString()}</span>
+            </div>
+            <p class="text-slate-600 leading-relaxed">${trabajo.descripcion || 'Sin descripción'}</p>
+            <div class="mt-6 flex flex-wrap gap-3">
+              ${trabajo.github_url ? `<a href="${trabajo.github_url}" target="_blank" class="btn-action inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-900 text-white font-semibold hover:bg-blue-800">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                Ver GitHub
+              </a>` : ''}
+              ${trabajo.archivo_url ? `<a href="${trabajo.archivo_url}" target="_blank" download class="btn-action inline-flex items-center gap-2 px-5 py-3 rounded-xl border-2 border-blue-900 text-blue-900 font-semibold hover:bg-blue-50">
+                ${obtenerIconoArchivo(trabajo.archivo_nombre)}
+                Descargar ${trabajo.archivo_nombre || 'archivo'}
+              </a>` : ''}
+            </div>
           </div>
+        </article>
+      `;
+    }
 
-          <span class="text-xs text-slate-400">
-            ${new Date(trabajo.created_at).toLocaleDateString()}
-          </span>
-        </div>
+    async function verificarYObtenerSesion() {
+      const { data } = await supabaseClient.auth.getSession();
+      return data.session;
+    }
 
-        <p class="mt-4 text-slate-600 leading-relaxed">
-          ${trabajo.descripcion || 'Sin descripción'}
-        </p>
+    async function cargarSemana() {
+      const session = await verificarYObtenerSesion();
 
-        <div class="mt-6 flex flex-wrap gap-3">
+      if (session) {
+        panelBtn.classList.remove('hidden');
+        logoutBtn.classList.remove('hidden');
+        loginBtn.classList.add('hidden');
+      }
 
-          ${
-            trabajo.github_url
-              ? `
-            <a href="${trabajo.github_url}" target="_blank"
-              class="px-4 py-2 bg-blue-900 text-white rounded-xl hover:bg-blue-800 transition">
-              Ver GitHub
+      const { data, error } = await supabaseClient
+        .from('trabajos_semana')
+        .select('*')
+        .eq('semana', numSemana)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error(error);
+        contenedor.innerHTML = `
+          <div class="empty-state col-span-full bg-white rounded-3xl shadow-lg p-16 text-center relative">
+            <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-red-100 flex items-center justify-center">
+              <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-red-600">Error al cargar la semana</h3>
+            <p class="mt-3 text-slate-600">${error.message}</p>
+          </div>
+        `;
+        return;
+      }
+
+      if (!data.length) {
+        contenedor.innerHTML = `
+          <div class="empty-state col-span-full bg-white rounded-3xl shadow-lg p-16 text-center relative">
+            <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-blue-100 flex items-center justify-center">
+              <svg class="w-12 h-12 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+              </svg>
+            </div>
+            <h3 class="text-3xl font-bold text-blue-900">Aún no hay trabajos registrados</h3>
+            <p class="mt-4 text-slate-600 text-lg">Esta semana todavía no cuenta con avances.</p>
+            <a href="iniciarsesion.html" class="inline-block mt-6 px-6 py-3 rounded-xl bg-blue-900 text-white font-semibold hover:bg-blue-800 transition">
+              Iniciar sesión para registrar
             </a>
-          `
-              : ''
-          }
+          </div>
+        `;
+        return;
+      }
 
-          ${
-            trabajo.archivo_url
-              ? `
-            <a href="${trabajo.archivo_url}" target="_blank"
-              download
-              class="px-4 py-2 border border-blue-900 text-blue-900 rounded-xl hover:bg-blue-50 transition">
-              ${obtenerIconoArchivo(trabajo.archivo_nombre)}
-              Descargar ${trabajo.archivo_nombre || 'archivo'}
-            </a>
-          `
-              : ''
-          }
-        </div>
-      </div>
-    </article>
-  `;
-}
+      contenedor.innerHTML = data.map(crearCard).join('');
+    }
 
-async function cargarSemana() {
-  const { data, error } = await supabaseClient
-    .from('trabajos_semana')
-    .select('*')
-    .eq('semana', numSemana)
-    .order('created_at', { ascending: false });
+    logoutBtn.addEventListener('click', cerrarSesion);
 
-  if (error) {
-    console.error(error);
-    contenedor.innerHTML = `
-      <div class="col-span-full bg-white rounded-3xl shadow-md p-10 text-center">
-        <h3 class="text-2xl font-bold text-red-600">
-          Error al cargar la semana
-        </h3>
-        <p class="mt-3 text-slate-600">
-          ${error.message}
-        </p>
-      </div>
-    `;
-    return;
-  }
-
-  if (!data.length) {
-    contenedor.innerHTML = `
-      <div class="col-span-full bg-white rounded-3xl shadow-md p-10 text-center">
-        <h3 class="text-2xl font-bold text-blue-900">
-          Aún no hay trabajos registrados
-        </h3>
-        <p class="mt-3 text-slate-600">
-          Esta semana todavía no cuenta con avances.
-        </p>
-      </div>
-    `;
-    return;
-  }
-
-  contenedor.innerHTML = data.map(crearCard).join('');
-}
-
-cargarSemana();
-</script>
+    cargarSemana();
+  </script>
 </body>
 </html>
