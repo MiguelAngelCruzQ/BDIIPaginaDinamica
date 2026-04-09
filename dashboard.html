@@ -98,6 +98,24 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+async function verificarSesion() {
+  const { data, error } = await supabaseClient.auth.getSession();
+
+  if (error) {
+    console.error(error);
+    window.location.href = 'iniciarsesion.html';
+    return;
+  }
+
+  if (!data.session) {
+    window.location.href = 'iniciarsesion.html';
+    return;
+  }
+}
+
+verificarSesion();
+
+
 const supabaseClient = window.supabase.createClient(
   'https://mfrbvrksnlbxovvlklyh.supabase.co',
   'sb_publishable_wUzL2Hg-3zFMDBE1aeHfgQ_ga5sWtNo'
