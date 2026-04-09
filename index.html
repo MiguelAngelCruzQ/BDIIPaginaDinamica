@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portafolio - Base de Datos II</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulseSoft {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    .fade-up { animation: fadeUp 1s ease-out; }
+    .pulse-soft { animation: pulseSoft 4s infinite ease-in-out; }
+  </style>
+</head>
+<body class="bg-white text-blue-900 min-h-screen overflow-x-hidden">
+
+  <header class="fixed top-0 left-0 w-full bg-blue-900 text-white shadow-lg z-50">
+    <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div class="flex items-center gap-3">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Universidad_Peruana_Los_Andes_logo.png/240px-Universidad_Peruana_Los_Andes_logo.png"
+             alt="Logo UPLA" class="w-10 h-10 rounded-full object-cover">
+        <span class="font-bold text-lg">Portafolio BD II</span>
+      </div>
+
+      <div class="hidden md:flex items-center gap-5 text-sm font-medium">
+        <a href="semana.html?num=1" class="hover:text-blue-200 transition">Semana 1</a>
+        <a href="semana.html?num=2" class="hover:text-blue-200 transition">Semana 2</a>
+        <a href="semana.html?num=3" class="hover:text-blue-200 transition">Semana 3</a>
+        <a href="semana.html?num=4" class="hover:text-blue-200 transition">Semana 4</a>
+        <a href="semana.html?num=5" class="hover:text-blue-200 transition">Semana 5</a>
+        <a href="semana.html?num=6" class="hover:text-blue-200 transition">Semana 6</a>
+        <a href="semana.html?num=7" class="hover:text-blue-200 transition">Semana 7</a>
+        <a href="semana.html?num=8" class="hover:text-blue-200 transition">Semana 8</a>
+        <a href="iniciarsesion.html" class="bg-white text-blue-900 px-4 py-2 rounded-xl hover:bg-blue-100 transition">Iniciar sesión</a>
+      </div>
+
+      <button id="menuBtn" class="md:hidden text-3xl font-bold">☰</button>
+    </nav>
+
+    <div id="mobileMenu" class="hidden md:hidden bg-blue-800 px-6 py-4 space-y-3">
+      <div class="flex justify-end">
+        <button id="closeMenu" class="text-2xl">✕</button>
+      </div>
+      <a href="semana.html?num=1" class="block">Semana 1</a>
+      <a href="semana.html?num=2" class="block">Semana 2</a>
+      <a href="semana.html?num=3" class="block">Semana 3</a>
+      <a href="semana.html?num=4" class="block">Semana 4</a>
+      <a href="semana.html?num=5" class="block">Semana 5</a>
+      <a href="semana.html?num=6" class="block">Semana 6</a>
+      <a href="semana.html?num=7" class="block">Semana 7</a>
+      <a href="semana.html?num=8" class="block">Semana 8</a>
+      <a href="iniciarsesion.html" class="block bg-white text-blue-900 text-center py-2 rounded-xl mt-2">Iniciar sesión</a>
+    </div>
+  </header>
+
+  <main class="min-h-screen flex items-center justify-center px-6 pt-24">
+    <section class="text-center fade-up">
+      <h1 class="text-5xl md:text-7xl font-extrabold tracking-wide pulse-soft">
+        GINGATE
+      </h1>
+      <p class="mt-4 text-xl md:text-2xl text-blue-700 font-medium">
+        Portafolio Académico - Base de Datos II
+      </p>
+      <p class="mt-6 max-w-3xl mx-auto text-gray-600 text-base md:text-lg leading-relaxed">
+        Plataforma demo conectada con <strong>Supabase</strong> para la gestión de avances semanales.
+        Cada semana mostrará los trabajos registrados por el usuario, incluyendo descripción,
+        enlace al repositorio de GitHub y captura del desarrollo.
+      </p>
+
+      <div class="mt-10 grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div class="bg-white shadow-lg rounded-2xl p-6 border border-blue-100 hover:scale-105 transition duration-300">
+          <h3 class="font-bold text-xl">Supabase</h3>
+          <p class="mt-2 text-gray-600">Persistencia de datos por semana y usuario.</p>
+        </div>
+        <div class="bg-white shadow-lg rounded-2xl p-6 border border-blue-100 hover:scale-105 transition duration-300">
+          <h3 class="font-bold text-xl">GitHub</h3>
+          <p class="mt-2 text-gray-600">Repositorio con materiales, código e imágenes.</p>
+        </div>
+        <div class="bg-white shadow-lg rounded-2xl p-6 border border-blue-100 hover:scale-105 transition duration-300">
+          <h3 class="font-bold text-xl">Dashboard</h3>
+          <p class="mt-2 text-gray-600">Interfaz privada para registrar y editar trabajos.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const closeMenu = document.getElementById('closeMenu');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.remove('hidden');
+    });
+
+    closeMenu.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+    });
+  </script>
+</body>
+</html>

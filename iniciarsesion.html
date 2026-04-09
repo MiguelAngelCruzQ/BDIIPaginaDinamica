@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión - Portafolio BD II</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp .8s ease-out; }
+  </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-white flex items-center justify-center px-6">
+
+  <section class="w-full max-w-md fade-up">
+    <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-blue-100">
+      <div class="text-center">
+        <h1 class="text-3xl font-extrabold text-blue-900">Iniciar sesión</h1>
+        <p class="mt-2 text-slate-600">Accede al panel para registrar avances y trabajos</p>
+      </div>
+
+      <form id="loginForm" class="mt-8 space-y-5">
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">Correo institucional</label>
+          <input
+            type="email"
+            id="correo"
+            placeholder="miguel@upla.edu.pe"
+            class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            required
+          >
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">Contraseña</label>
+          <div class="relative">
+            <input
+              type="password"
+              id="password"
+              placeholder="••••••••"
+              class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              required
+            >
+            <button type="button" id="togglePass" class="absolute right-4 top-3 text-slate-500 hover:text-blue-900">
+              👁
+            </button>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-3 rounded-2xl bg-blue-900 text-white font-semibold hover:bg-blue-800 hover:scale-[1.02] transition duration-300"
+        >
+          Entrar al dashboard
+        </button>
+      </form>
+
+      <div id="mensaje" class="mt-5 text-center text-sm"></div>
+
+      <div class="mt-6 text-center">
+        <a href="index.html" class="text-blue-800 hover:underline">← Volver al portafolio</a>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const supabaseClient = window.supabase.createClient(
+  'https://mfrbvrksnlbxovvlklyh.supabase.co',
+  'sb_publishable_wUzL2Hg-3zFMDBE1aeHfgQ_ga5sWtNo'
+);
+
+const togglePass = document.getElementById('togglePass');
+const password = document.getElementById('password');
+const form = document.getElementById('loginForm');
+const mensaje = document.getElementById('mensaje');
+
+togglePass.addEventListener('click', () => {
+  password.type = password.type === 'password' ? 'text' : 'password';
+});
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const correo = document.getElementById('correo').value;
+  const pass = password.value;
+
+  mensaje.innerHTML = `
+    <span class="text-blue-700">
+      Validando acceso...
+    </span>
+  `;
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email: correo,
+    password: pass
+  });
+
+  if (error) {
+    mensaje.innerHTML = `
+      <span class="text-red-600">
+        ${error.message}
+      </span>
+    `;
+    return;
+  }
+
+  mensaje.innerHTML = `
+    <span class="text-green-600">
+      Acceso correcto
+    </span>
+  `;
+
+  setTimeout(() => {
+    window.location.href = 'dashboard.html';
+  }, 800);
+});
+</script>
+</body>
+</html>
