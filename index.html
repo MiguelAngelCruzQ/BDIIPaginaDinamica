@@ -161,17 +161,16 @@
       </div>
 
       <div class="hidden lg:flex items-center gap-8 text-sm font-medium">
-        <a href="semana.html?num=1" class="nav-link hover:text-blue-200 transition">Semana 1</a>
-        <a href="semana.html?num=2" class="nav-link hover:text-blue-200 transition">Semana 2</a>
-        <a href="semana.html?num=3" class="nav-link hover:text-blue-200 transition">Semana 3</a>
-        <a href="semana.html?num=4" class="nav-link hover:text-blue-200 transition">Semana 4</a>
-        <a href="semana.html?num=5" class="nav-link hover:text-blue-200 transition">Semana 5</a>
-        <a href="semana.html?num=6" class="nav-link hover:text-blue-200 transition">Semana 6</a>
-        <a href="semana.html?num=7" class="nav-link hover:text-blue-200 transition">Semana 7</a>
-        <a href="semana.html?num=8" class="nav-link hover:text-blue-200 transition">Semana 8</a>
+        <a href="#" onclick="abrirUnidad(1)" class="nav-link hover:text-blue-200 transition">Unidad 1</a>
+<a  href="#" onclick="abrirUnidad(2)" class="nav-link hover:text-blue-200 transition">Unidad 2</a>
+<a href="#" onclick="abrirUnidad(3)" class="nav-link hover:text-blue-200 transition">Unidad 3</a>
+<a href="#" onclick="abrirUnidad(4)" class="nav-link hover:text-blue-200 transition">Unidad 4</a>
         <a href="dashboard.html" id="dashboardLink" class="btn-primary bg-white text-blue-900 px-6 py-2 rounded-full hover:bg-blue-50 hidden">Dashboard</a>
         <button id="logoutHeaderBtn" class="btn-primary bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-600 transition hidden">Cerrar sesión</button>
         <a href="iniciarsesion.html" id="loginLink" class="btn-primary bg-white text-blue-900 px-6 py-2 rounded-full hover:bg-blue-50">Iniciar sesión</a>
+     <a href="register.html" id="registerlink" class="btn-primary bg-white text-blue-900 px-6 py-2 rounded-full hover:bg-blue-50">Registrarse</a>
+     
+     
       </div>
 
       <button id="menuBtn" class="lg:hidden text-3xl font-bold hover:scale-110 transition">☰</button>
@@ -300,6 +299,19 @@
     logoutHeaderBtn.addEventListener('click', cerrarSesion);
     logoutMobileBtn.addEventListener('click', cerrarSesion);
     verificarEstadoSesion();
+
+
+
+    async function abrirUnidad(num) {
+  const { data } = await supabaseClient.auth.getSession();
+
+  if (!data.session) {
+    window.location.replace('iniciarsesion.html');
+    return;
+  }
+
+  window.location.href = `unidad.html?num=${num}`;
+}
   </script>
 </body>
 </html>

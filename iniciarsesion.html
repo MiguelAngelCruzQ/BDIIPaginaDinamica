@@ -213,6 +213,11 @@
           </svg>
           Volver al portafolio
         </a>
+        <a href="index.html" class="link-hover inline-flex items-center gap-2 text-blue-800 font-semibold">
+          
+          
+          ¿no tienes una cuenta ?Registrate
+        </a>
       </div>
     </div>
   </section>
@@ -269,9 +274,33 @@
       mensaje.innerHTML = `<span class="text-green-600">Acceso correcto ✓</span>`;
       submitBtn.textContent = 'Redirigiendo...';
 
-      setTimeout(() => {
-        window.location.href = 'dashboard.html';
-      }, 800);
+     const { data: userData } = await supabaseClient.auth.getUser();
+console.log("USER AUTH:", userData.user);
+const { data: profile, error: profileError } = await supabaseClient
+  .from('profiles')
+  .select('rol')
+  .eq('id', userData.user.id)
+  .single();
+
+if (profileError || !profile) {
+  console.error(profileError);
+
+  mensaje.innerHTML = `
+    <span class="text-red-600">
+      Perfil no encontrado
+    </span>
+  `;
+
+  submitBtn.disabled = false;
+  submitBtn.textContent = 'Entrar';
+  return;
+}
+
+if (profile.rol === 'admin') {
+  window.location.href = 'dashboard.html';
+} else {
+  window.location.href = 'index.html';
+}
     });
   </script>
 </body>

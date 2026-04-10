@@ -160,10 +160,16 @@
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const numSemana = Number(params.get('num')) || 1;
 
-    document.getElementById('semanaBadge').textContent = `Semana ${numSemana}`;
-    document.getElementById('tituloSemana').textContent = `Avances de la Semana ${numSemana}`;
+const numUnidad = Number(params.get('unidad')) || 1;
+const numSemana = Number(params.get('semana')) || 1;
+
+document.getElementById('semanaBadge').textContent =
+  `Unidad ${numUnidad} - Semana ${numSemana}`;
+
+document.getElementById('tituloSemana').textContent =
+  `Avances de la Unidad ${numUnidad} - Semana ${numSemana}`;
+
 
     const contenedor = document.getElementById('contenedorTrabajos');
     const panelBtn = document.getElementById('panelBtn');
@@ -224,6 +230,7 @@
       const { data, error } = await supabaseClient
         .from('trabajos_semana')
         .select('*')
+        .eq('unidad', numUnidad)
         .eq('semana', numSemana)
         .order('created_at', { ascending: false });
 

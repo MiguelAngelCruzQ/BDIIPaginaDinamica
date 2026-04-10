@@ -406,6 +406,27 @@
     logoutBtn.addEventListener('click', cerrarSesion);
 
     init();
+
+    async function verificarAdmin() {
+  const { data } = await supabaseClient.auth.getUser();
+
+  if (!data.user) {
+    window.location.href = 'iniciarsesion.html';
+    return;
+  }
+
+  const { data: profile } = await supabaseClient
+    .from('profiles')
+    .select('rol')
+    .eq('id', data.user.id)
+    .single();
+
+  if (profile.rol !== 'admin') {
+    window.location.href = 'index.html';
+  }
+}
+
+verificarAdmin();
   </script>
 </body>
 </html>

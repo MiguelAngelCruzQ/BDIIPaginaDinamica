@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro - Portafolio BD II</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp .8s ease-out; }
+  </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-white flex items-center justify-center px-6">
+
+  <section class="w-full max-w-md fade-up">
+    <div class="bg-white/95 rounded-3xl shadow-2xl p-8 border border-blue-100">
+      
+      <div class="text-center">
+        <h1 class="text-3xl font-extrabold text-blue-900">Sign Up</h1>
+        <p class="mt-2 text-slate-600">
+          Regístrate para visualizar las unidades y semanas
+        </p>
+      </div>
+
+      <form id="registerForm" class="mt-8 space-y-5">
+        
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">
+            Nombre
+          </label>
+          <input
+            type="text"
+            id="nombre"
+            placeholder="Miguel Cruz"
+            class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-blue-500"
+            required
+          >
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">
+            Correo
+          </label>
+          <input
+            type="email"
+            id="correo"
+            placeholder="miguel@correo.com"
+            class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-blue-500"
+            required
+          >
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">
+            Contraseña
+          </label>
+          <input
+            type="password"
+            id="password"
+            placeholder="••••••••"
+            class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-blue-500"
+            required
+          >
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-3 rounded-2xl bg-blue-900 text-white font-semibold hover:bg-blue-800 transition"
+        >
+          Crear cuenta
+        </button>
+      </form>
+
+      <div id="mensaje" class="mt-5 text-center text-sm"></div>
+
+      <div class="mt-6 text-center">
+        <a href="iniciarsesion.html" class="text-blue-800 hover:underline">
+          ¿Ya tienes cuenta? Sign In
+        </a>
+      </div>
+        
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js"></script>
+  <script>
+
+const form = document.getElementById('registerForm');
+const mensaje = document.getElementById('mensaje');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const nombre = document.getElementById('nombre').value;
+  const correo = document.getElementById('correo').value;
+  const password = document.getElementById('password').value;
+
+const { data, error } = await supabaseClient.auth.signUp({
+  email: correo,
+  password: password,
+  options: {
+    emailRedirectTo: 'https://github.com/MiguelAngelCruzQ/BDIIPaginaDinamica/blob/main/auth-callback.html'
+  }
+} );
+mensaje.innerHTML = `
+  <div class="mt-4 p-4 rounded-2xl bg-blue-50 border border-blue-200 text-blue-900">
+    <h3 class="font-bold text-lg">Cuenta creada correctamente ✓</h3>
+    <p class="mt-2 text-sm leading-relaxed">
+      Hemos enviado un correo de confirmación a <strong>${correo}</strong>.
+      Por favor revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.
+    </p>
+    <p class="mt-2 text-sm text-slate-600">
+      Si no lo encuentras, revisa la carpeta de spam o correo no deseado.
+    </p>
+  </div>
+`;
+  if (error) {
+    mensaje.innerHTML = `<span class="text-red-600">${error.message}</span>`;
+    return;
+  }
+
+  mensaje.innerHTML = `<span class="text-green-600">Registro exitoso ✓</span>`;
+
+  setTimeout(() => {
+    window.location.href = 'iniciarsesion.html';
+  }, 1000);
+});
+</script>
+  
+</body>
+</html>
