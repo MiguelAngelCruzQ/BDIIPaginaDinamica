@@ -288,16 +288,16 @@ async function cargarNavbar() {
 
   if (!sessionData.session) {
     userArea.innerHTML = `
-      <a href="iniciarsesion.html"
-         class="bg-white text-blue-900 px-4 py-2 rounded-xl">
-        Iniciar sesión
-      </a>
+     <a href="iniciarsesion.html"
+     class="nav-link bg-white text-blue-900 px-5 py-2 rounded-full font-semibold shadow-md hover:shadow-lg hover:scale-105 transition duration-300">
+    Iniciar sesión
+  </a>
 
-      <a href="register.html"
-         class="border border-white px-4 py-2 rounded-xl">
-        Registrarse
-      </a>
-    `;
+  <a href="register.html"
+     class="nav-link border-2 border-white text-white px-5 py-2 rounded-full font-semibold hover:bg-white hover:text-blue-900 hover:scale-105 transition duration-300">
+    Registrarse
+  </a>
+`;
     return;
   }
 
