@@ -16,7 +16,7 @@ async function verificarSesion() {
 
 async function cerrarSesion() {
   await supabaseClient.auth.signOut();
-  window.location.replace = 'iniciarsesion.html';
+  window.location.href = 'iniciarsesion.html';
 }
 
 supabaseClient.auth.onAuthStateChange((event, session) => {
@@ -28,3 +28,4 @@ window.addEventListener('storage', (event) => {
     window.location.href = 'iniciarsesion.html';
   }
 });
+
