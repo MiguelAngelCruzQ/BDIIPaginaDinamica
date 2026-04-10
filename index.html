@@ -165,11 +165,7 @@
 <a  href="#" onclick="abrirUnidad(2)" class="nav-link hover:text-blue-200 transition">Unidad 2</a>
 <a href="#" onclick="abrirUnidad(3)" class="nav-link hover:text-blue-200 transition">Unidad 3</a>
 <a href="#" onclick="abrirUnidad(4)" class="nav-link hover:text-blue-200 transition">Unidad 4</a>
-        <a href="dashboard.html" id="dashboardLink" class="btn-primary bg-white text-blue-900 px-6 py-2 rounded-full hover:bg-blue-50 hidden">Dashboard</a>
-        <button id="logoutHeaderBtn" class="btn-primary bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-600 transition hidden">Cerrar sesión</button>
-        <a href="iniciarsesion.html" id="loginLink" class="btn-primary bg-white text-blue-900 px-6 py-2 rounded-full hover:bg-blue-50">Iniciar sesión</a>
-     <a href="register.html" id="registerlink" class="btn-primary bg-white text-blue-900 px-6 py-2 rounded-full hover:bg-blue-50">Registrarse</a>
-     
+       <div id="userArea" class="flex items-center gap-3"></div>
      
       </div>
 
@@ -311,6 +307,57 @@
   }
 
   window.location.href = `unidad.html?num=${num}`;
+}
+
+async function cargarNavbar() {
+  const { data: sessionData } = await supabaseClient.auth.getSession();
+
+  const userArea = document.getElementById('userArea');
+
+  if (!sessionData.session) {
+    userArea.innerHTML = `
+      <a href="iniciarsesion.html"
+         class="bg-white text-blue-900 px-4 py-2 rounded-xl">
+        Iniciar sesión
+      </a>
+
+      <a href="register.html"
+         class="border border-white px-4 py-2 rounded-xl">
+        Registrarse
+      </a>
+    `;
+    return;
+  }
+
+  const user = sessionData.session.user;
+
+  const { data: profile } = await supabaseClient
+    .from('profiles')
+    .select('nombre, correo, rol')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  if (profile?.rol === 'admin') {
+    userArea.innerHTML = `
+      <span class="text-sm">${profile.nombre}</span>
+      <a href="dashboard.html"
+         class="bg-white text-blue-900 px-4 py-2 rounded-xl">
+        Dashboard
+      </a>
+      <button onclick="cerrarSesion()"
+         class="border border-white px-4 py-2 rounded-xl">
+        Salir
+      </button>
+    `;
+  } else {
+    userArea.innerHTML = `
+      <span class="text-sm">${profile?.nombre || user.email}</span>
+      <button onclick="cerrarSesion()"
+         class="border border-white px-4 py-2 rounded-xl">
+        Salir
+      </button>
+    `;
+  }
 }
   </script>
 </body>
