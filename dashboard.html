@@ -1,287 +1,249 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Cache-Control" content="no-store" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Portafolio BD II</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @keyframes fadeIn {
+    @keyframes slide-up {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
-    }
-    .fade-in { animation: fadeIn .7s ease-out; }
-    .slide-in { animation: slideIn .5s ease-out; }
-    .gradient-animated {
-      background: linear-gradient(-45deg, #1e3a8a, #1e40af, #3b82f6, #60a5fa);
-      background-size: 300% 300%;
-      animation: gradientMove 8s ease infinite;
+
+    .page-enter {
+      animation: slide-up 0.5s ease both;
     }
 
-    .nav-btn {
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s ease;
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      min-height: 100vh;
+      color: #e2e8f0;
     }
-    .nav-btn::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, #60a5fa, #93c5fd);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.3s ease;
-    }
-    .nav-btn:hover::before { transform: scaleX(1); transform-origin: left; }
-    .nav-btn:hover { transform: translateY(-2px); }
 
-    .card {
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    .card-form {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 1.5rem;
     }
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #1e40af, #3b82f6, #60a5fa);
-      transform: scaleX(0);
-      transition: transform 0.4s ease;
+    .card-form:hover {
+      border-color: #0ea5e9;
     }
-    .card:hover::before { transform: scaleX(1); }
-    .card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1); }
 
     .input-field {
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: #e2e8f0;
       transition: all 0.3s ease;
-      border: 2px solid transparent;
     }
     .input-field:focus {
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-      transform: translateY(-2px);
+      border-color: #0ea5e9;
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+      outline: none;
     }
-
-    .btn-submit {
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      background: linear-gradient(135deg, #1e3a8a, #1e40af);
-    }
-    .btn-submit::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s ease;
-    }
-    .btn-submit:hover::before { left: 100%; }
-    .btn-submit:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px -5px rgba(30, 64, 175, 0.4);
-      background: linear-gradient(135deg, #1e40af, #3b82f6);
-    }
-
-    .trabajo-card {
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .trabajo-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 0;
-      background: linear-gradient(180deg, #3b82f6, #1e40af);
-      transition: height 0.4s ease;
-    }
-    .trabajo-card:hover::before { height: 100%; }
-    .trabajo-card:hover {
-      transform: translateX(8px);
-      box-shadow: 0 15px 35px -10px rgba(0,0,0,0.15);
-    }
-    .trabajo-card .trabajo-img {
-      transition: transform 0.5s ease;
-    }
-    .trabajo-card:hover .trabajo-img {
-      transform: scale(1.05);
+    .input-field option {
+      background: #1e293b;
+      color: #e2e8f0;
     }
 
     .btn-action {
-      position: relative;
-      overflow: hidden;
       transition: all 0.3s ease;
     }
-    .btn-action::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: rgba(255,255,255,0.2);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: width 0.4s ease, height 0.4s ease;
+    .btn-action:hover {
+      transform: scale(1.05);
     }
-    .btn-action:hover::before { width: 200px; height: 200px; }
-    .btn-action:hover { transform: scale(1.05); }
 
-    .badge-count {
-      animation: float 2s ease-in-out infinite;
+    .btn-submit {
+      background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+      transition: all 0.3s ease;
+    }
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.4);
+    }
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .work-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .work-card:hover {
+      transform: translateX(4px);
+      border-color: #0ea5e9;
+      box-shadow: 0 15px 30px -10px rgba(14, 165, 233, 0.2);
+    }
+
+    .work-card img {
+      transition: transform 0.4s ease;
+    }
+    .work-card:hover img {
+      transform: scale(1.03);
+    }
+
+    .btn-nav {
+      transition: all 0.3s ease;
+    }
+    .btn-nav:hover {
+      background: #334155;
+    }
+
+    .stagger > * {
+      opacity: 0;
+      animation: slide-up 0.5s ease forwards;
+    }
+    .stagger > *:nth-child(1) { animation-delay: 0.1s; }
+    .stagger > *:nth-child(2) { animation-delay: 0.2s; }
+    .stagger > *:nth-child(3) { animation-delay: 0.3s; }
+    .stagger > *:nth-child(4) { animation-delay: 0.4s; }
+    .stagger > *:nth-child(5) { animation-delay: 0.5s; }
+
+    @media (max-width: 1024px) {
+      .work-card:hover { transform: translateY(-3px); }
     }
   </style>
 </head>
-<body class="bg-slate-100 min-h-screen text-slate-800">
+<body class="page-enter">
 
-  <header class="gradient-animated text-white shadow-xl sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+  <header class="sticky top-0 z-50 bg-[#0f172a]/90 backdrop-blur-lg border-b border-[#334155]">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
           </svg>
         </div>
         <div>
-          <h1 class="text-2xl font-bold">Dashboard Académico</h1>
-          <p class="text-sm text-blue-200">Gestión de trabajos y avances semanales</p>
+          <h1 class="font-bold text-slate-100">Dashboard</h1>
+          <p class="text-xs text-slate-400 hidden sm:block">Gestión de trabajos</p>
         </div>
+      </a>
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="btn-nav px-5 py-2 rounded-xl bg-[#1e293b] border border-[#334155] text-slate-200 text-sm font-medium">Inicio</a>
+        <button onclick="cerrarSesion()" class="px-4 py-2 rounded-xl bg-red-500/20 border border-red-500/30 text-red-400 text-sm font-medium hover:bg-red-500/30 transition">Salir</button>
       </div>
-      <div class="flex gap-3">
-        <a href="index.html" class="nav-btn bg-white text-blue-900 px-6 py-2 rounded-full font-semibold">Inicio</a>
-        <button id="logoutBtn" class="nav-btn border-2 border-white px-6 py-2 rounded-full hover:bg-white hover:text-blue-900">Cerrar sesión</button>
-      </div>
-    </div>
+    </nav>
   </header>
 
-  <main class="max-w-7xl mx-auto px-6 py-10 grid lg:grid-cols-3 gap-8 fade-in">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+    <div class="grid lg:grid-cols-3 gap-8">
+      <section class="lg:col-span-1">
+        <div class="card-form p-8 sticky top-28">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-slate-100">Nuevo trabajo</h2>
+              <p class="text-slate-400 text-sm">Registra avances semanales</p>
+            </div>
+          </div>
 
-    <section class="lg:col-span-1">
-      <div class="card bg-white rounded-3xl shadow-lg p-8 sticky top-28">
-        <div class="flex items-center gap-3 mb-6">
-          <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
-            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-            </svg>
-          </div>
-          <div>
-            <h2 class="text-2xl font-bold text-blue-900">Nuevo trabajo</h2>
-          </div>
+          <form id="trabajoForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2">Unidad</label>
+              <select id="unidad" class="input-field w-full px-4 py-3 rounded-xl cursor-pointer">
+                <option value="1">Unidad 1</option>
+                <option value="2">Unidad 2</option>
+                <option value="3">Unidad 3</option>
+                <option value="4">Unidad 4</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2">Semana</label>
+              <select id="semana" class="input-field w-full px-4 py-3 rounded-xl cursor-pointer">
+                <option value="1">Semana 1</option>
+                <option value="2">Semana 2</option>
+                <option value="3">Semana 3</option>
+                <option value="4">Semana 4</option>
+                <option value="5">Semana 5</option>
+                <option value="6">Semana 6</option>
+                <option value="7">Semana 7</option>
+                <option value="8">Semana 8</option>
+                <option value="9">Semana 9</option>
+                <option value="10">Semana 10</option>
+                <option value="11">Semana 11</option>
+                <option value="12">Semana 12</option>
+                <option value="13">Semana 13</option>
+                <option value="14">Semana 14</option>
+                <option value="15">Semana 15</option>
+                <option value="16">Semana 16</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2">Título</label>
+              <input id="titulo" type="text" class="input-field w-full px-4 py-3 rounded-xl" placeholder="Ej: Modelo relacional" required>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2">Descripción</label>
+              <textarea id="descripcion" rows="3" class="input-field w-full px-4 py-3 rounded-xl resize-none" placeholder="Describe el avance..."></textarea>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2">URL de imagen</label>
+              <input id="imagen" type="url" class="input-field w-full px-4 py-3 rounded-xl" placeholder="https://...">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2">URL de GitHub</label>
+              <input id="github" type="url" class="input-field w-full px-4 py-3 rounded-xl" placeholder="https://github.com/...">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2">Archivo</label>
+              <input id="archivo" type="file" class="input-field w-full px-4 py-3 rounded-xl text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-cyan-500/20 file:text-cyan-300 hover:file:bg-cyan-500/30 cursor-pointer">
+            </div>
+
+            <button type="submit" class="btn-submit w-full py-4 rounded-xl text-white font-bold text-lg mt-6">
+              Guardar trabajo
+            </button>
+          </form>
         </div>
-        <p class="mt-2 text-slate-600 text-sm">Registra avances por semana y enlaza el repositorio GitHub.</p>
+      </section>
 
-        <form id="trabajoForm" class="mt-6 space-y-5">
-          <div>
-            <label class="block text-sm font-semibold mb-2 text-slate-700">Semana</label>
-            <select id="semana" class="input-field w-full px-4 py-3 rounded-2xl bg-slate-50 cursor-pointer">
-              <option value="1">Semana 1</option>
-              <option value="2">Semana 2</option>
-              <option value="3">Semana 3</option>
-              <option value="4">Semana 4</option>
-              <option value="5">Semana 5</option>
-              <option value="6">Semana 6</option>
-              <option value="7">Semana 7</option>
-              <option value="8">Semana 8</option>
-              <option value="9">Semana 9</option>
-              <option value="10">Semana 10</option>
-              <option value="11">Semana 11</option>
-              <option value="12">Semana 12</option>
-              <option value="13">Semana 13</option>
-              <option value="14">Semana 14</option>
-              <option value="15">Semana 15</option>
-              <option value="16">Semana 16</option>
-            </select>
+      <section class="lg:col-span-2">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+              </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-100">Trabajos registrados</h2>
           </div>
-
-          <div>
-            <label class="block text-sm font-semibold mb-2 text-slate-700">Título</label>
-            <input id="titulo" type="text" class="input-field w-full px-4 py-3 rounded-2xl bg-slate-50" placeholder="Ej: Modelo relacional" required>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold mb-2 text-slate-700">Descripción</label>
-            <textarea id="descripcion" rows="4" class="input-field w-full px-4 py-3 rounded-2xl bg-slate-50 resize-none" placeholder="Describe el avance realizado..."></textarea>
-          </div>
-          
-          <div>
-            <label class="block text-sm font-semibold mb-2 text-slate-700">URL de imagen / captura</label>
-            <input id="imagen" type="url" class="input-field w-full px-4 py-3 rounded-2xl bg-slate-50" placeholder="https://...imagen.png">
-          </div>
-          
-          <div>
-            <label class="block text-sm font-semibold mb-2 text-slate-700">URL de GitHub</label>
-            <input id="github" type="url" class="input-field w-full px-4 py-3 rounded-2xl bg-slate-50" placeholder="https://github.com/...">
-          </div>
-          
-          <div>
-            <label class="block text-sm font-semibold mb-2 text-slate-700">Material / Archivo</label>
-            <input id="archivo" type="file" class="input-field w-full px-4 py-3 rounded-2xl bg-slate-50 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 cursor-pointer">
-          </div>
-          
-          <button type="submit" class="btn-submit w-full py-4 rounded-2xl text-white font-bold text-lg shadow-lg mt-6">
-            Guardar trabajo
-          </button>
-        </form>
-      </div>
-    </section>
-
-    <section class="lg:col-span-2 slide-in">
-      <div class="flex justify-between items-center mb-6">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
-            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-            </svg>
-          </div>
-          <h2 class="text-2xl font-bold text-blue-900">Trabajos registrados</h2>
+          <span id="contador" class="px-4 py-2 rounded-full bg-cyan-500/10 text-cyan-400 text-sm font-semibold border border-cyan-500/20">0 registros</span>
         </div>
-        <span id="contador" class="badge-count px-4 py-2 rounded-full bg-blue-100 text-blue-800 text-sm font-semibold">0 registros</span>
-      </div>
 
-      <div id="listaTrabajos" class="space-y-5"></div>
-    </section>
+        <div id="listaTrabajos" class="stagger space-y-5"></div>
+      </section>
+    </div>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="auth.js"></script>
+  <script src="transitions.js"></script>
 
   <script>
     const form = document.getElementById('trabajoForm');
     const lista = document.getElementById('listaTrabajos');
     const contador = document.getElementById('contador');
-    const logoutBtn = document.getElementById('logoutBtn');
 
     let trabajos = [];
 
     async function init() {
-      const sesionActiva = await verificarSesion();
-      if (!sesionActiva) return;
+      const hasAccess = await verificarAdmin();
+      if (!hasAccess) return;
       cargarTrabajos();
     }
 
@@ -290,40 +252,34 @@
 
       if (!trabajos.length) {
         lista.innerHTML = `
-          <div class="card bg-white rounded-3xl shadow-md p-12 text-center">
-            <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-slate-100 flex items-center justify-center">
-              <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="card-form p-12 text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center">
+              <svg class="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
               </svg>
             </div>
-            <p class="text-slate-500 text-lg">Aún no se han registrado trabajos.</p>
-            <p class="text-slate-400 text-sm mt-2">Usa el formulario para agregar tu primer trabajo.</p>
+            <p class="text-slate-400 text-lg">Aún no hay trabajos registrados</p>
+            <p class="text-slate-500 text-sm mt-2">Usa el formulario para agregar tu primer trabajo</p>
           </div>
         `;
         return;
       }
 
-      lista.innerHTML = trabajos.map((t) => `
-        <article class="trabajo-card bg-white rounded-3xl shadow-md overflow-hidden border border-slate-100 pl-4">
-          ${t.imagen_url ? `<div class="overflow-hidden"><img src="${t.imagen_url}" class="trabajo-img w-full h-56 object-cover"></div>` : ''}
+      lista.innerHTML = trabajos.map(t => `
+        <article class="work-card overflow-hidden">
+          ${t.imagen_url ? `<div class="overflow-hidden"><img src="${t.imagen_url}" class="w-full h-48 object-cover"></div>` : ''}
           <div class="p-6">
-            <div class="flex justify-between items-start">
+            <div class="flex justify-between items-start mb-4">
               <div>
-                <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 mb-2">Semana ${t.semana}</span>
-                <h3 class="text-2xl font-bold text-blue-900">${t.titulo}</h3>
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-400 mb-2">U${t.unidad} - Semana ${t.semana}</span>
+                <h3 class="text-xl font-bold text-slate-100">${t.titulo}</h3>
               </div>
-              <button onclick="eliminarTrabajo('${t.id}')" class="btn-action text-sm px-4 py-2 rounded-xl border-2 border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300">Eliminar</button>
+              <button onclick="eliminarTrabajo('${t.id}')" class="btn-action px-4 py-2 rounded-xl border border-red-500/30 text-red-400 text-sm font-medium hover:bg-red-500/20">Eliminar</button>
             </div>
-            <p class="mt-4 text-slate-600 leading-relaxed">${t.descripcion || 'Sin descripción'}</p>
-            <div class="mt-6 flex flex-wrap gap-3">
-              ${t.github_url ? `<a href="${t.github_url}" target="_blank" class="btn-action inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-blue-900 text-white hover:bg-blue-800">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                Ver repositorio
-              </a>` : ''}
-              ${t.archivo_url ? `<a href="${t.archivo_url}" target="_blank" class="btn-action inline-flex items-center gap-2 px-5 py-2 rounded-xl border-2 border-blue-900 text-blue-900 hover:bg-blue-50">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                Descargar material
-              </a>` : ''}
+            <p class="text-slate-400 mb-6">${t.descripcion || 'Sin descripción'}</p>
+            <div class="flex flex-wrap gap-3">
+              ${t.github_url ? `<a href="${t.github_url}" target="_blank" class="btn-action inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-sm font-semibold">GitHub</a>` : ''}
+              ${t.archivo_url ? `<a href="${t.archivo_url}" target="_blank" class="btn-action inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-cyan-500/30 text-cyan-400 text-sm font-semibold hover:bg-cyan-500/10">Descargar</a>` : ''}
             </div>
           </div>
         </article>
@@ -336,49 +292,34 @@
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) {
-        console.error(error);
-        alert(error.message);
-        return;
-      }
-
+      if (error) { alert(error.message); return; }
       trabajos = data;
       renderTrabajos();
     }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Guardando...';
 
+      const unidad = Number(document.getElementById('unidad').value);
       const semana = Number(document.getElementById('semana').value);
       const archivo = document.getElementById('archivo')?.files?.[0];
 
-      let archivoUrl = '';
-      let archivoNombre = '';
+      let archivoUrl = '', archivoNombre = '';
 
       if (archivo) {
-        const rutaArchivo = `semana-${semana}/${Date.now()}-${archivo.name}`;
-
-        const { error: uploadError } = await supabaseClient
-          .storage
-          .from('BDII5tociclo')
-          .upload(rutaArchivo, archivo);
-
-        if (uploadError) {
-          alert('Error al subir archivo: ' + uploadError.message);
-          return;
-        }
-
-        const { data: publicUrlData } = supabaseClient
-          .storage
-          .from('BDII5tociclo')
-          .getPublicUrl(rutaArchivo);
-
-        archivoUrl = publicUrlData.publicUrl;
+        const ruta = `u${unidad}/s${semana}/${Date.now()}-${archivo.name}`;
+        const { error: upError } = await supabaseClient.storage.from('BDII5tociclo').upload(ruta, archivo);
+        if (upError) { alert('Error: ' + upError.message); btn.disabled = false; btn.textContent = 'Guardar trabajo'; return; }
+        const { data: urlData } = supabaseClient.storage.from('BDII5tociclo').getPublicUrl(ruta);
+        archivoUrl = urlData.publicUrl;
         archivoNombre = archivo.name;
       }
 
       const nuevo = {
-        semana: semana,
+        unidad, semana,
         titulo: document.getElementById('titulo').value,
         descripcion: document.getElementById('descripcion').value,
         github_url: document.getElementById('github').value,
@@ -387,65 +328,22 @@
         archivo_nombre: archivoNombre
       };
 
-      const { error } = await supabaseClient
-        .from('trabajos_semana')
-        .insert([nuevo]);
-
-      if (error) {
-        alert('Error al guardar: ' + error.message);
-        return;
-      }
+      const { error } = await supabaseClient.from('trabajos_semana').insert([nuevo]);
+      if (error) { alert('Error: ' + error.message); btn.disabled = false; btn.textContent = 'Guardar trabajo'; return; }
 
       form.reset();
+      btn.disabled = false;
+      btn.textContent = 'Guardar trabajo';
       cargarTrabajos();
     });
 
     async function eliminarTrabajo(id) {
-      const { error } = await supabaseClient
-        .from('trabajos_semana')
-        .delete()
-        .eq('id', id);
-
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
+      const { error } = await supabaseClient.from('trabajos_semana').delete().eq('id', id);
+      if (error) { alert(error.message); return; }
       cargarTrabajos();
     }
 
-    logoutBtn.addEventListener('click', cerrarSesion);
-
     init();
-
-    async function verificarAdmin() {
-  const { data } = await supabaseClient.auth.getUser();
-
-  if (!data.user) {
-    window.location.href = 'iniciarsesion.html';
-    return;
-  }
-
-  const { data: profile } = await supabaseClient
-    .from('profiles')
-    .select('rol')
-    .eq('id', data.user.id)
-    .single();
-
-  if (profile.rol !== 'admin') {
-    window.location.href = 'index.html';
-  }
-}
-
-verificarAdmin();
-
-window.addEventListener('pageshow', async function () {
-  const { data } = await supabaseClient.auth.getSession();
-
-  if (!data.session) {
-    window.location.replace('iniciarsesion.html');
-  }
-});
   </script>
 </body>
 </html>
