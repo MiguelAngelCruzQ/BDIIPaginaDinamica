@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="Cache-Control" content="no-store" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
   <title>Unidad - Portafolio BD II</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -107,6 +110,14 @@ function cargarUnidad() {
 }
 
 verificarAcceso();
+
+window.addEventListener('pageshow', async function () {
+  const { data } = await supabaseClient.auth.getSession();
+
+  if (!data.session) {
+    window.location.replace('iniciarsesion.html');
+  }
+});
 </script>
 </body>
 </html>
