@@ -266,39 +266,12 @@
   <script src="auth.js"></script>
 
   <script>
-    const menuBtn = document.getElementById('menuBtn');
-    const closeMenu = document.getElementById('closeMenu');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const loginLink = document.getElementById('loginLink');
-    const dashboardLink = document.getElementById('dashboardLink');
-    const logoutHeaderBtn = document.getElementById('logoutHeaderBtn');
-    const loginLinkMobile = document.getElementById('loginLinkMobile');
-    const dashboardLinkMobile = document.getElementById('dashboardLinkMobile');
-    const logoutMobileBtn = document.getElementById('logoutMobileBtn');
+   menuBtn.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
+closeMenu.addEventListener('click', () => mobileMenu.classList.add('hidden'));
 
-    menuBtn.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
-    closeMenu.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+logoutMobileBtn.addEventListener('click', cerrarSesion);
 
-    async function verificarEstadoSesion() {
-      const { data } = await supabaseClient.auth.getSession();
-      const tieneSesion = !!data.session;
-      if (tieneSesion) {
-        loginLink.classList.add('hidden');
-        loginLinkMobile.classList.add('hidden');
-        dashboardLink.classList.remove('hidden');
-        dashboardLinkMobile.classList.remove('hidden');
-        logoutHeaderBtn.classList.remove('hidden');
-        logoutMobileBtn.classList.remove('hidden');
-      }
-    }
-
-    logoutHeaderBtn.addEventListener('click', cerrarSesion);
-    logoutMobileBtn.addEventListener('click', cerrarSesion);
-    verificarEstadoSesion();
-
-
-
-    async function abrirUnidad(num) {
+async function abrirUnidad(num) {
   const { data } = await supabaseClient.auth.getSession();
 
   if (!data.session) {
@@ -311,7 +284,6 @@
 
 async function cargarNavbar() {
   const { data: sessionData } = await supabaseClient.auth.getSession();
-
   const userArea = document.getElementById('userArea');
 
   if (!sessionData.session) {
@@ -359,6 +331,8 @@ async function cargarNavbar() {
     `;
   }
 }
+
+cargarNavbar();
   </script>
 </body>
 </html>
