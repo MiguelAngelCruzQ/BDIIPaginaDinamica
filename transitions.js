@@ -1,32 +1,17 @@
 const PageTransitions = {
   navigate(url) {
-    if (!document.startViewTransition) {
-      window.location.href = url;
-      return;
+    const target = document.querySelector('main');
+    if (target) {
+      target.style.opacity = '0';
+      target.style.transition = 'opacity 0.3s ease';
     }
-
-    document.startViewTransition(() => {
+    setTimeout(() => {
       window.location.href = url;
-    });
+    }, 300);
   },
 
   navigateWithZoom(url, element) {
-    if (!document.startViewTransition || !element) {
-      window.location.href = url;
-      return;
-    }
-
-    const rect = element.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
-
-    document.documentElement.style.setProperty('--zoom-x', `${x}px`);
-    document.documentElement.style.setProperty('--zoom-y', `${y}px`);
-    document.documentElement.style.setProperty('--zoom-size', `${Math.max(rect.width, rect.height)}px`);
-
-    document.startViewTransition(() => {
-      window.location.href = url;
-    });
+    window.location.href = url;
   }
 };
 

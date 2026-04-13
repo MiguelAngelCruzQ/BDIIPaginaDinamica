@@ -3,8 +3,8 @@ const supabaseKey = 'sb_publishable_wUzL2Hg-3zFMDBE1aeHfgQ_ga5sWtNo';
 
 const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-const rutasPublicas = ['index.html', 'iniciarsesion.html', 'register.html', 'auth-callback.html'];
-const rutasProtegidas = ['dashboard.html', 'unidad.html', 'semana.html'];
+const rutasPublicas = ['index.html', 'iniciarsesion.html', 'register.html', 'auth-callback.html', 'unidad.html', 'semana.html'];
+const rutasProtegidas = ['dashboard.html'];
 
 function esRutaPublica() {
   const path = window.location.pathname.split('/').pop() || 'index.html';

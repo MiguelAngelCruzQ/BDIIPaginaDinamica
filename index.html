@@ -211,7 +211,7 @@
       </button>
     </nav>
 
-    <div id="mobileMenu" class="hidden lg:hidden glass-dark px-4 pb-4">
+    <div id="mobileMenu" class="hidden lg:hidden glass-dark px-4 pb-4" style="transition: opacity 0.3s ease, transform 0.3s ease;">
       <div class="flex flex-wrap gap-2 pt-2">
         <a href="#" onclick="abrirUnidad(1); return false;" class="flex-1 min-w-[45%] text-center py-3 rounded-xl bg-white/10 hover:bg-white/20 transition text-sm font-medium">Unidad 1</a>
         <a href="#" onclick="abrirUnidad(2); return false;" class="flex-1 min-w-[45%] text-center py-3 rounded-xl bg-white/10 hover:bg-white/20 transition text-sm font-medium">Unidad 2</a>
@@ -310,15 +310,30 @@
     const mobileMenu = document.getElementById('mobileMenu');
     const loginLinkMobile = document.getElementById('loginLinkMobile');
     const logoutMobileBtn = document.getElementById('logoutMobileBtn');
+    let menuOpen = false;
 
-    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+    menuBtn.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      if (menuOpen) {
+        mobileMenu.classList.remove('hidden');
+        mobileMenu.style.opacity = '0';
+        mobileMenu.style.transform = 'translateY(-10px)';
+        requestAnimationFrame(() => {
+          mobileMenu.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+          mobileMenu.style.opacity = '1';
+          mobileMenu.style.transform = 'translateY(0)';
+        });
+      } else {
+        mobileMenu.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+        mobileMenu.style.opacity = '0';
+        mobileMenu.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+          mobileMenu.classList.add('hidden');
+        }, 200);
+      }
+    });
 
     async function abrirUnidad(num) {
-      const session = await verificarSesion();
-      if (!session) {
-        navigateTo('iniciarsesion.html');
-        return;
-      }
       navigateTo(`unidad.html?num=${num}`);
     }
 
@@ -329,7 +344,6 @@
       if (!user) {
         userArea.innerHTML = `
           <a href="iniciarsesion.html" class="btn-glow px-5 py-2 rounded-xl glass text-sm font-semibold">Iniciar sesión</a>
-          <a href="register.html" class="btn-glow px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-sm font-semibold">Registrarse</a>
         `;
         loginLinkMobile.classList.remove('hidden');
         return;

@@ -165,18 +165,6 @@
                 <option value="2">Semana 2</option>
                 <option value="3">Semana 3</option>
                 <option value="4">Semana 4</option>
-                <option value="5">Semana 5</option>
-                <option value="6">Semana 6</option>
-                <option value="7">Semana 7</option>
-                <option value="8">Semana 8</option>
-                <option value="9">Semana 9</option>
-                <option value="10">Semana 10</option>
-                <option value="11">Semana 11</option>
-                <option value="12">Semana 12</option>
-                <option value="13">Semana 13</option>
-                <option value="14">Semana 14</option>
-                <option value="15">Semana 15</option>
-                <option value="16">Semana 16</option>
               </select>
             </div>
 
@@ -191,8 +179,8 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-slate-300 mb-2">URL de imagen</label>
-              <input id="imagen" type="url" class="input-field w-full px-4 py-3 rounded-xl" placeholder="https://...">
+              <label class="block text-sm font-medium text-slate-300 mb-2">Imagen de presentación</label>
+              <input id="imagen" type="file" accept="image/*" class="input-field w-full px-4 py-3 rounded-xl text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-500/20 file:text-purple-300 hover:file:bg-purple-500/30 cursor-pointer">
             </div>
 
             <div>
@@ -201,7 +189,7 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-slate-300 mb-2">Archivo</label>
+              <label class="block text-sm font-medium text-slate-300 mb-2">Archivo (PDF,ZIP,etc)</label>
               <input id="archivo" type="file" class="input-field w-full px-4 py-3 rounded-xl text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-cyan-500/20 file:text-cyan-300 hover:file:bg-cyan-500/30 cursor-pointer">
             </div>
 
@@ -306,11 +294,26 @@
       const unidad = Number(document.getElementById('unidad').value);
       const semana = Number(document.getElementById('semana').value);
       const archivo = document.getElementById('archivo')?.files?.[0];
+      const imagen = document.getElementById('imagen')?.files?.[0];
 
-      let archivoUrl = '', archivoNombre = '';
+      const sanitizarNombre = (nombre) => nombre.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9.-]/g, '_');
+
+      let archivoUrl = '', archivoNombre = '', imagenUrl = '';
+
+      if (imagen) {
+        const ext = imagen.name.split('.').pop();
+        const nombreSanitizado = sanitizarNombre(imagen.name);
+        const rutaImg = `imagenes/${Date.now()}-${nombreSanitizado}`;
+        const { error: imgError } = await supabaseClient.storage.from('BDII5tociclo').upload(rutaImg, imagen);
+        if (imgError) { alert('Error al subir imagen: ' + imgError.message); btn.disabled = false; btn.textContent = 'Guardar trabajo'; return; }
+        const { data: imgData } = supabaseClient.storage.from('BDII5tociclo').getPublicUrl(rutaImg);
+        imagenUrl = imgData.publicUrl;
+      }
 
       if (archivo) {
-        const ruta = `u${unidad}/s${semana}/${Date.now()}-${archivo.name}`;
+        const ext = archivo.name.split('.').pop();
+        const nombreSanitizado = sanitizarNombre(archivo.name);
+        const ruta = `u${unidad}/s${semana}/${Date.now()}-${nombreSanitizado}`;
         const { error: upError } = await supabaseClient.storage.from('BDII5tociclo').upload(ruta, archivo);
         if (upError) { alert('Error: ' + upError.message); btn.disabled = false; btn.textContent = 'Guardar trabajo'; return; }
         const { data: urlData } = supabaseClient.storage.from('BDII5tociclo').getPublicUrl(ruta);
@@ -323,7 +326,7 @@
         titulo: document.getElementById('titulo').value,
         descripcion: document.getElementById('descripcion').value,
         github_url: document.getElementById('github').value,
-        imagen_url: document.getElementById('imagen').value,
+        imagen_url: imagenUrl,
         archivo_url: archivoUrl,
         archivo_nombre: archivoNombre
       };

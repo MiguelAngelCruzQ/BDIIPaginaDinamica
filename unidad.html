@@ -154,8 +154,6 @@
     document.getElementById('numUnidad2').textContent = numUnidad;
 
     async function init() {
-      const hasAccess = await verificarAccesoUnidad();
-      if (!hasAccess) return;
       cargarUnidad();
     }
 
