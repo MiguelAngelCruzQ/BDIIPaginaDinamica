@@ -339,14 +339,8 @@
     menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
 
     async function abrirUnidad(num) {
-      const session = await verificarSesion();
-      if (!session) {
-        navigateTo('iniciarsesion.html');
-        return;
-      }
       navigateTo(`unidad.html?num=${num}`);
     }
-
     async function cargarNavbar() {
       const user = await obtenerUsuarioActual();
       const userArea = document.getElementById('userArea');
